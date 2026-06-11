@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtualna Elektrana – INOVA 2025</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg:        #0a0f0d;
+    --surface:   #111a14;
+    --card:      #162019;
+    --border:    #1f3326;
+    --accent:    #2ecc71;
+    --accent2:   #f0c040;
+    --accent3:   #3dbfff;
+    --text:      #e8f5ec;
+    --muted:     #7a9983;
+    --danger:    #e74c3c;
+    --font-d:    'Space Grotesk', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-d);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ───── GRID BACKGROUND ───── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,204,113,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,204,113,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ───── HERO ───── */
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 60px 40px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 60px;
+  }
+
+  .logo-dot {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--accent);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 20px var(--accent); }
+    50%      { box-shadow: 0 0 40px var(--accent), 0 0 80px rgba(46,204,113,.3); }
+  }
+
+  .logo-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    max-width: 700px;
+  }
+
+  .hero-title span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* ───── LIVE STATS BAR ───── */
+  .stats-bar {
+    display: flex;
+    gap: 2px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 22px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .stat-pill .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-pill .value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  .stat-pill .unit {
+    font-size: .75rem;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  /* ───── MAIN LAYOUT ───── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+  }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; padding: 0 20px 60px; }
+    header { padding: 40px 20px 20px; }
+  }
+
+  /* ───── CARDS ───── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .card-title {
+    font-size: .7rem;
+    font-family: var(--font-mono);
+    letter-spacing: .16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* ───── SOURCES GRID ───── */
+  .sources-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .source-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color .2s, transform .15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .source-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .source-card.active { border-color: var(--accent); }
+
+  .source-card.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .source-icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+  .source-name {
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .source-kw {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .source-slider {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  /* ───── FLOW DIAGRAM ───── */
+  .flow-diagram {
+    margin: 8px 0 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .flow-node {
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .flow-node .icon { font-size: 1.5rem; margin-bottom: 4px; }
+  .flow-node .name { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+  .flow-node .kw {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 3px;
+  }
+
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    animation: flow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes flow {
+    0%,100% { opacity: .4; transform: translateX(0); }
+    50%      { opacity: 1;  transform: translateX(4px); }
+  }
+
+  /* ───── RIGHT PANEL ───── */
+  .right-col { display: flex; flex-direction: column; gap: 24px; }
+
+  /* ───── CONSUMPTION FORM ───── */
+  .form-group { margin-bottom: 18px; }
+
+  .form-group label {
+    display: block;
+    font-size: .72rem;
+    font-family: var(--font-mono);
+    letter-spacing: .12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .form-group input, .form-group select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-d);
+    font-size: .95rem;
+    padding: 10px 14px;
+    transition: border-color .2s;
+    outline: none;
+  }
+
+  .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+
+  .form-group select option { background: var(--surface); }
+
+  .btn {
+    width: 100%;
+    background: var(--accent);
+    color: #0a0f0d;
+    font-family: var(--font-d);
+    font-weight: 700;
+    font-size: .95rem;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    letter-spacing: .03em;
+    transition: opacity .2s, transform .1s;
+    margin-top: 4px;
+  }
+
+  .btn:hover { opacity: .9; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    margin-top: 10px;
+  }
+
+  /* ───── RESULT BOX ───── */
+  .result-box {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .result-box.show { display: block; }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+
+  .result-row:last-child { border-bottom: none; }
+
+  .result-row .rkey { color: var(--muted); }
+  .result-row .rval {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .result-row .rval.warn { color: var(--accent2); }
+  .result-row .rval.surplus { color: var(--accent); }
+  .result-row .rval.deficit { color: var(--danger); }
+
+  /* ───── CHART ───── */
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+    margin-top: 8px;
+  }
+
+  canvas { width: 100% !important; }
+
+  /* ───── BADGE ───── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(46,204,113,.12);
+    border: 1px solid rgba(46,204,113,.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: .72rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    margin-top: 12px;
+  }
+
+  /* ───── FOOTER ───── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: .78rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <div class="logo-dot"></div>
+    <span class="logo-label">INOVA 2025 &nbsp;·&nbsp; Virtualna Elektrana</span>
+  </div>
+
+  <h1 class="hero-title">
+    Energija iz<br>
+    <span>više izvora,<br>jedan sustav.</span>
+  </h1>
+  <p class="hero-sub">
+    Virtualna elektrana objedinjuje solarne panele, vjetroturbine, baterije i mrežu u jedan
+    upravljački sustav – i u realnom vremenu izračunava potrošnju i suficit/deficit energije.
+  </p>
+
+  <div class="stats-bar">
+    <div class="stat-pill">
+      <div class="label">Ukupna prod.</div>
+      <div class="value" id="totalProd">0</div><span class="unit">kW</span>
+    </div>
+    <div class="stat-pill">
+      <div class="label">Potrošnja</div>
+      <div class="value" id="totalCons">0</div><span class="unit">kW</span>
+    </div>
+    <div class="stat-pill">
+      <div class="label">Bilanca</div>
+      <div class="value" id="balanceVal">0</div><span class="unit">kW</span>
+    </div>
+    <div class="stat-pill">
+      <div class="label">CO₂ ušteda / god</div>
+      <div class="value" id="co2Val">0</div><span class="unit">t</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT COLUMN -->
+  <div>
+    <!-- SOURCES -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="card-title">Izvori energije – postavi kapacitet</div>
+      <div class="sources-grid">
+        <div class="source-card active" id="sc-solar">
+          <div class="source-icon">☀️</div>
+          <div class="source-name">Solarni paneli</div>
+          <div class="source-kw"><span id="solar-val">50</span> kW</div>
+          <input type="range" class="source-slider" id="solar-slider" min="0" max="500" value="50" oninput="updateSource('solar')">
+        </div>
+        <div class="source-card" id="sc-wind">
+          <div class="source-icon">🌬️</div>
+          <div class="source-name">Vjetroturbina</div>
+          <div class="source-kw"><span id="wind-val">30</span> kW</div>
+          <input type="range" class="source-slider" id="wind-slider" min="0" max="500" value="30" oninput="updateSource('wind')">
+        </div>
+        <div class="source-card" id="sc-battery">
+          <div class="source-icon">🔋</div>
+          <div class="source-name">Baterija (pražnjenje)</div>
+          <div class="source-kw"><span id="battery-val">0</span> kW</div>
+          <input type="range" class="source-slider" id="battery-slider" min="0" max="200" value="0" oninput="updateSource('battery')">
+        </div>
+        <div class="source-card" id="sc-hydro">
+          <div class="source-icon">💧</div>
+          <div class="source-name">Mala hidroelektrana</div>
+          <div class="source-kw"><span id="hydro-val">0</span> kW</div>
+          <input type="range" class="source-slider" id="hydro-slider" min="0" max="300" value="0" oninput="updateSource('hydro')">
+        </div>
+      </div>
+
+      <!-- FLOW DIAGRAM -->
+      <div class="flow-diagram">
+        <div class="flow-node">
+          <div class="icon">⚡</div>
+          <div class="name">Produkcija</div>
+          <div class="kw" id="flow-prod">80 kW</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="icon">🖧</div>
+          <div class="name">VPP upravljač</div>
+          <div class="kw" style="color:var(--accent3)">AI balans</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="icon">🏠</div>
+          <div class="name">Potrošači</div>
+          <div class="kw" id="flow-cons">0 kW</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <div class="icon">🔌</div>
+          <div class="name">Mreža</div>
+          <div class="kw" id="flow-grid">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART CARD -->
+    <div class="card">
+      <div class="card-title">Dnevni profil – produkcija vs. potrošnja (simulacija)</div>
+      <div class="chart-wrap">
+        <canvas id="dailyChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-col">
+    <!-- CONSUMPTION CALCULATOR -->
+    <div class="card">
+      <div class="card-title">Kalkulator potrošnje</div>
+
+      <div class="form-group">
+        <label>Tip potrošača</label>
+        <select id="consumerType" onchange="applyPreset()">
+          <option value="custom">Prilagođeno</option>
+          <option value="house">Kućanstvo (prosj. HR)</option>
+          <option value="school">Škola / Javna zgrada</option>
+          <option value="factory">Mala tvornica</option>
+          <option value="farm">Poljoprivredno imanje</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Godišnja potrošnja (kWh/god)</label>
+        <input type="number" id="annualKwh" value="0" min="0" placeholder="npr. 4500">
+      </div>
+
+      <div class="form-group">
+        <label>Površina solarnih panela (m²)</label>
+        <input type="number" id="solarArea" value="0" min="0" placeholder="npr. 20">
+      </div>
+
+      <div class="form-group">
+        <label>Prosj. sunčani sati/dan (lokacija)</label>
+        <input type="number" id="sunHours" value="4.5" min="1" max="12" step="0.1">
+      </div>
+
+      <div class="form-group">
+        <label>Efikasnost panela (%)</label>
+        <input type="number" id="panelEff" value="20" min="5" max="35">
+      </div>
+
+      <div class="form-group">
+        <label>Cijena struje (€/kWh)</label>
+        <input type="number" id="elPrice" value="0.17" min="0.01" max="2" step="0.01">
+      </div>
+
+      <button class="btn" onclick="calculate()">Izračunaj →</button>
+      <button class="btn btn-outline" onclick="exportPDF()">⬇ Preuzmi izvještaj (HTML→PDF)</button>
+
+      <div class="result-box" id="resultBox">
+        <div class="result-row"><span class="rkey">Godišnja potrošnja</span><span class="rval" id="r-annual"></span></div>
+        <div class="result-row"><span class="rkey">Dnevna potrošnja</span><span class="rval" id="r-daily"></span></div>
+        <div class="result-row"><span class="rkey">Vršna snaga (procjena)</span><span class="rval" id="r-peak"></span></div>
+        <div class="result-row"><span class="rkey">Solarni prinos/god</span><span class="rval" id="r-solar-yield"></span></div>
+        <div class="result-row"><span class="rkey">Pokrivenost solarom</span><span class="rval" id="r-coverage"></span></div>
+        <div class="result-row"><span class="rkey">Suficit / Deficit</span><span class="rval" id="r-balance"></span></div>
+        <div class="result-row"><span class="rkey">Godišnja ušteda (€)</span><span class="rval" id="r-savings"></span></div>
+        <div class="result-row"><span class="rkey">CO₂ ušteda / god</span><span class="rval" id="r-co2"></span></div>
+        <div class="result-row"><span class="rkey">Povrat investicije</span><span class="rval warn" id="r-roi"></span></div>
+        <div id="badge-area"></div>
+      </div>
+    </div>
+
+    <!-- INFO CARD -->
+    <div class="card">
+      <div class="card-title">Što je virtualna elektrana?</div>
+      <p style="color:var(--muted);font-size:.88rem;line-height:1.75">
+        VPP (Virtual Power Plant) je sustav koji agregira distribuirane energetske resurse –
+        solarne panele, vjetroturbine, baterije i fleksibilne potrošače – i njima upravlja
+        kao jednom virtualnom elektranom. Kroz softversku platformu optimizira tok energije,
+        smanjuje troškove i sudjeluje na energetskom tržištu.
+      </p>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+        <span class="badge">☀️ Solarna energija</span>
+        <span class="badge">🌬️ Vjetar</span>
+        <span class="badge">🔋 Pohrana</span>
+        <span class="badge">🔌 Smart Grid</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>INOVA 2025 &nbsp;·&nbsp; Projekt: Virtualna Elektrana &nbsp;·&nbsp; Kalkulator potrošnje i produkcije</footer>
+
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// ─── STATE ───────────────────────────────────────────
+const sources = { solar: 50, wind: 30, battery: 0, hydro: 0 };
+let consumption = 0;
+
+// ─── SOURCE SLIDERS ───────────────────────────────────
+function updateSource(key) {
+  const val = parseInt(document.getElementById(key + '-slider').value);
+  sources[key] = val;
+  document.getElementById(key + '-val').textContent = val;
+  refreshDashboard();
+}
+
+function refreshDashboard() {
+  const prod = sources.solar + sources.wind + sources.battery + sources.hydro;
+  const balance = prod - consumption;
+
+  document.getElementById('totalProd').textContent = prod;
+  document.getElementById('totalCons').textContent = consumption;
+  document.getElementById('co2Val').textContent = (prod * 8760 * 0.00023).toFixed(1);
+
+  const bEl = document.getElementById('balanceVal');
+  bEl.textContent = (balance >= 0 ? '+' : '') + balance;
+  bEl.style.color = balance >= 0 ? 'var(--accent)' : 'var(--danger)';
+
+  document.getElementById('flow-prod').textContent = prod + ' kW';
+  document.getElementById('flow-cons').textContent = consumption + ' kW';
+  document.getElementById('flow-grid').textContent =
+    balance > 0 ? '+' + balance + ' kW' : balance + ' kW';
+
+  updateChart(prod, consumption);
+}
+
+// ─── PRESETS ─────────────────────────────────────────
+function applyPreset() {
+  const presets = {
+    house:   { kwh: 4500,  area: 20, sun: 4.5, eff: 20, price: 0.17 },
+    school:  { kwh: 90000, area: 200, sun: 4.5, eff: 19, price: 0.15 },
+    factory: { kwh: 250000, area: 500, sun: 4.5, eff: 19, price: 0.14 },
+    farm:    { kwh: 35000,  area: 80,  sun: 5.0, eff: 20, price: 0.16 },
+  };
+  const t = document.getElementById('consumerType').value;
+  if (presets[t]) {
+    document.getElementById('annualKwh').value = presets[t].kwh;
+    document.getElementById('solarArea').value = presets[t].area;
+    document.getElementById('sunHours').value  = presets[t].sun;
+    document.getElementById('panelEff').value  = presets[t].eff;
+    document.getElementById('elPrice').value   = presets[t].price;
+  }
+}
+
+// ─── CALCULATE ────────────────────────────────────────
+function calculate() {
+  const annual  = parseFloat(document.getElementById('annualKwh').value) || 0;
+  const area    = parseFloat(document.getElementById('solarArea').value) || 0;
+  const sun     = parseFloat(document.getElementById('sunHours').value) || 4.5;
+  const eff     = parseFloat(document.getElementById('panelEff').value) / 100 || 0.20;
+  const price   = parseFloat(document.getElementById('elPrice').value) || 0.17;
+
+  const daily      = annual / 365;
+  const peak       = daily / 6;                          // rough peak kW
+  const solarYield = area * eff * 1000 * sun * 365 / 1000; // kWh/year (1000 W/m² irradiance)
+  const coverage   = annual > 0 ? Math.min(solarYield / annual * 100, 100) : 0;
+  const surplus    = solarYield - annual;
+  const savings    = Math.min(solarYield, annual) * price;
+  const co2        = solarYield * 0.00023;               // t CO₂, HR grid factor
+  const invest     = area * 200;                         // ~200 €/m² installed
+  const roi        = savings > 0 ? (invest / savings).toFixed(1) : '—';
+
+  document.getElementById('r-annual').textContent      = annual.toLocaleString('hr-HR') + ' kWh';
+  document.getElementById('r-daily').textContent       = daily.toFixed(1) + ' kWh';
+  document.getElementById('r-peak').textContent        = peak.toFixed(1) + ' kW';
+  document.getElementById('r-solar-yield').textContent = solarYield.toFixed(0) + ' kWh';
+  document.getElementById('r-coverage').textContent    = coverage.toFixed(1) + ' %';
+
+  const bEl = document.getElementById('r-balance');
+  bEl.textContent = (surplus >= 0 ? 'Suficit +' : 'Deficit ') + Math.abs(surplus).toFixed(0) + ' kWh';
+  bEl.className = 'rval ' + (surplus >= 0 ? 'surplus' : 'deficit');
+
+  document.getElementById('r-savings').textContent = savings.toFixed(0) + ' €';
+  document.getElementById('r-co2').textContent     = co2.toFixed(2) + ' t';
+  document.getElementById('r-roi').textContent     = roi + (roi !== '—' ? ' godina' : '');
+
+  document.getElementById('resultBox').classList.add('show');
+
+  // badge
+  const badgeArea = document.getElementById('badge-area');
+  badgeArea.innerHTML = coverage >= 100
+    ? '<div class="badge" style="margin-top:12px;color:var(--accent)">✅ Energetski neovisan sustav!</div>'
+    : coverage >= 50
+      ? '<div class="badge" style="margin-top:12px;color:var(--accent2)">⚡ Djelomično neovisan sustav</div>'
+      : '<div class="badge" style="margin-top:12px;color:var(--danger);border-color:rgba(231,76,60,.3);background:rgba(231,76,60,.08)">⚠️ Potrebni dodatni izvori energije</div>';
+
+  // update dashboard consumption
+  consumption = Math.round(peak);
+  refreshDashboard();
+
+  // update chart with real data
+  const prod = sources.solar + sources.wind + sources.battery + sources.hydro;
+  updateChart(prod, consumption);
+}
+
+// ─── EXPORT ──────────────────────────────────────────
+function exportPDF() {
+  const box = document.getElementById('resultBox');
+  if (!box.classList.contains('show')) { alert('Najprije klikni Izračunaj →'); return; }
+
+  const rows = [...box.querySelectorAll('.result-row')].map(r => {
+    const k = r.querySelector('.rkey').textContent;
+    const v = r.querySelector('.rval').textContent;
+    return `<tr><td>${k}</td><td><strong>${v}</strong></td></tr>`;
+  }).join('');
+
+  const consumerType = document.getElementById('consumerType');
+  const typeName = consumerType.options[consumerType.selectedIndex].text;
+
+  const html = `<!DOCTYPE html><html lang="hr"><head><meta charset="UTF-8">
+<title>VPP Izvještaj – INOVA 2025</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; color: #1a2e1f; }
+  h1 { color: #2ecc71; border-bottom: 2px solid #2ecc71; padding-bottom: 10px; }
+  h2 { font-size: 1rem; color: #555; margin-top: 30px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  td { padding: 10px 14px; border-bottom: 1px solid #e0ead3; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: #555; }
+  td:last-child { text-align: right; }
+  .footer { margin-top: 40px; font-size: .75rem; color: #aaa; text-align: center; }
+  .badge { display:inline-block; background:#e8f5e9; color:#2ecc71; padding:4px 12px; border-radius:20px; font-size:.8rem; margin-top:16px; }
+</style></head><body>
+<h1>⚡ Virtualna Elektrana – Izvještaj</h1>
+<p><strong>Projekt:</strong> INOVA 2025 &nbsp;|&nbsp; <strong>Tip potrošača:</strong> ${typeName}</p>
+<p><strong>Datum:</strong> ${new Date().toLocaleDateString('hr-HR')}</p>
+<h2>Rezultati kalkulatora potrošnje i solarnog prinosa</h2>
+<table>${rows}</table>
+<h2>Postavljeni kapaciteti izvora</h2>
+<table>
+  <tr><td>☀️ Solarni paneli</td><td><strong>${sources.solar} kW</strong></td></tr>
+  <tr><td>🌬️ Vjetroturbina</td><td><strong>${sources.wind} kW</strong></td></tr>
+  <tr><td>🔋 Baterija</td><td><strong>${sources.battery} kW</strong></td></tr>
+  <tr><td>💧 Hidroelektrana</td><td><strong>${sources.hydro} kW</strong></td></tr>
+  <tr><td><strong>Ukupna instalirana snaga</strong></td><td><strong>${sources.solar+sources.wind+sources.battery+sources.hydro} kW</strong></td></tr>
+</table>
+<p class="badge">INOVA 2025 &nbsp;·&nbsp; Virtualna Elektrana – Kalkulator</p>
+<div class="footer">Generirao: VPP Kalkulator &nbsp;·&nbsp; ${new Date().toLocaleString('hr-HR')}</div>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'VPP_Izvjestaj_INOVA2025.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── CHART ───────────────────────────────────────────
+const hours = Array.from({length:24}, (_,i) => i + ':00');
+const solarProfile = [0,0,0,0,0,0.1,0.3,0.5,0.7,0.85,0.95,1,1,0.95,0.85,0.7,0.5,0.3,0.1,0,0,0,0,0];
+const loadProfile  = [0.3,0.25,0.22,0.2,0.2,0.25,0.4,0.7,0.8,0.75,0.7,0.65,0.7,0.65,0.6,0.65,0.75,0.9,1,0.95,0.85,0.7,0.55,0.4];
+
+let chart;
+function updateChart(prod, cons) {
+  const prodData = solarProfile.map(f => +(f * prod).toFixed(1));
+  const consData = loadProfile.map(f  => +(f * Math.max(cons, 1)).toFixed(1));
+
+  if (chart) {
+    chart.data.datasets[0].data = prodData;
+    chart.data.datasets[1].data = consData;
+    chart.update('none');
+    return;
+  }
+
+  const ctx = document.getElementById('dailyChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: hours,
+      datasets: [
+        { label: 'Produkcija (kW)', data: prodData,
+          borderColor: '#2ecc71', backgroundColor: 'rgba(46,204,113,.12)',
+          fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2 },
+        { label: 'Potrošnja (kW)', data: consData,
+          borderColor: '#f0c040', backgroundColor: 'rgba(240,192,64,.08)',
+          fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2, borderDash: [4,3] }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#7a9983', font: { family: 'Space Mono', size: 11 }, boxWidth: 14, padding: 14 } }
+      },
+      scales: {
+        x: { ticks: { color: '#7a9983', font: { size: 10 }, maxTicksLimit: 8 }, grid: { color: 'rgba(255,255,255,.04)' } },
+        y: { ticks: { color: '#7a9983', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.04)' } }
+      }
+    }
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────
+updateChart(80, 0);
+refreshDashboard();
+</script>
+</body>
+</html>
